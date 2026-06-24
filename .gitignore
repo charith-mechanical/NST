@@ -1,0 +1,29 @@
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+
+# Ignore Python bytecode directories
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# New images uploaded through the running web app
+# (the few sample images already in static/uploads/ are kept as demo content)
+NST_Code/static/uploads/*
+!NST_Code/static/uploads/brad_pitt.jpg
+!NST_Code/static/uploads/la_muse.jpg
+!NST_Code/static/uploads/mondrian_cropped.jpg
+!NST_Code/static/uploads/picasso_seated_nude_hr.jpg
+!NST_Code/static/uploads/stylized_brad_pitt.jpg
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
