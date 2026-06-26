@@ -55,12 +55,12 @@ def allowed_file(filename):
 
 def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
     content_transform = transforms.Compose([
-        transforms.Resize(512),
+        transforms.Resize(256),
         transforms.ToTensor()
     ])
 
     style_transform = transforms.Compose([
-        transforms.Resize(512),
+        transforms.Resize(256),
         transforms.ToTensor()
     ])
     content_image = content_transform(content_image).unsqueeze(0).to(device)
@@ -124,7 +124,9 @@ def index():
                 alpha = float(form.alpha.data)
                 stylized_image = style_transfer(content_image, style_image, encoder, decoder, alpha, device)
 
-                result_filename = 'stylized_' + content_filename
+                import uuid
+                unique_id = str(uuid.uuid4())[:8]
+                result_filename = f'stylized_{unique_id}_{content_filename}'
                 result_path = os.path.join(app.config['UPLOAD_FOLDER'], result_filename)
                 save_image(stylized_image, result_path)
                 
