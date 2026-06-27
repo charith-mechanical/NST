@@ -54,17 +54,16 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
-    content_transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.ToTensor()
-    ])
+    # Strictly limit the longest edge to 384px to guarantee we never exceed 512MB RAM
+    content_image.thumbnail((384, 384))
+    style_image.thumbnail((384, 384))
 
-    style_transform = transforms.Compose([
-        transforms.Resize(256),
+    transform = transforms.Compose([
         transforms.ToTensor()
     ])
-    content_image = content_transform(content_image).unsqueeze(0).to(device)
-    style_image = style_transform(style_image).unsqueeze(0).to(device)
+    
+    content_image = transform(content_image).unsqueeze(0).to(device)
+    style_image = transform(style_image).unsqueeze(0).to(device)
 
     with torch.no_grad():
         content_feats = encoder(content_image, is_test=True)
