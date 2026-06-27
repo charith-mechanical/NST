@@ -44,7 +44,14 @@ DECODER_WEIGHTS_PATH = os.path.join(BASE_DIR, 'experiment', 'final_exp', 'decode
 
 encoder = VGGEncoder(VGG_WEIGHTS_PATH).to(device)
 decoder = Decoder().to(device)
-decoder.load_state_dict(torch.load(DECODER_WEIGHTS_PATH, map_location=device))
+state_dict = torch.load(DECODER_WEIGHTS_PATH, map_location=device)
+new_state_dict = {}
+for k, v in state_dict.items():
+    if not k.startswith('net.'):
+        new_state_dict['net.' + k] = v
+    else:
+        new_state_dict[k] = v
+decoder.load_state_dict(new_state_dict)
 
 encoder.eval()
 decoder.eval()
